@@ -1,0 +1,93 @@
+<template>
+  <div class="home">
+    <section class="sectionOne">
+    <div class="calDiv">
+      <p>Dung lam chu de</p>
+    </div>
+    <div class="contentCal">
+      <div class="items">
+        <div class="item" v-for="(item, index) in items" :key="index">
+          <router-link :to="{name:'ViewPage', params:{id: index}}">
+          <img :src="item.urlToImage" alt="" />
+          <div class="textItem">
+            <div class="textContent">
+              <h3>{{ item.title }}</h3>
+              <span>{{ item.author }}</span>
+            </div>
+          </div>
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+// import HelloWorld from "@/components/HelloWorld.vue"; cho component
+
+export default {
+  name: "Home",
+ 
+  computed:{
+    items(){
+      return this.$store.getters.allItems
+    }
+  },
+  mounted(){
+    this.$store.dispatch("axiosItems")
+  },
+  created(){
+    console.log("created:",this.$store.getters)
+  }
+};
+</script>
+<style>
+.sectionOne {
+  position: relative;
+ 
+}
+.sectionOne .calDiv {
+  width: 100%;
+  height: 10rem;
+  background-color: #333;
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+}
+/* .sectionOne .contentCal {
+} */
+.sectionOne .contentCal .items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.sectionOne .contentCal .items .item {
+  position: relative;
+  width: 20rem;
+}
+.items .item img {
+  width: 100%;
+  height: 160px;
+}
+
+/* .item .textItem {
+} */
+/* .item .textItem .textContent::before{
+  position:absolute;
+  left: 0;
+  content: '';
+  height: 5rem;
+  border-left: 1px solid #333;
+} */
+.item .textItem .textContent span {
+  margin-left: 1rem;
+}
+
+/* 
+https://blog.logrocket.com/how-to-consume-apis-with-vuex-and-axios/
+https://medium.com/@magyarn/building-an-online-store-with-vue-cli-part-4-612d99230f92
+
+ */
+</style>

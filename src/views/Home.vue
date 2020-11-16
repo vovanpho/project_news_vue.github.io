@@ -7,15 +7,13 @@
     <div class="contentCal">
       <div class="items">
         <div class="item" v-for="(item, index) in items" :key="index">
-          <router-link :to="{name:'ViewPage', params:{id: index}}">
           <img :src="item.urlToImage" alt="" />
           <div class="textItem">
             <div class="textContent">
-              <h3>{{ item.title }}</h3>
+              <a :href="item.url" target="_blank" rel="noopener noreferrer"><h3>{{ item.title }}</h3></a>
               <span>{{ item.author }}</span>
             </div>
           </div>
-          </router-link>
         </div>
       </div>
     </div>
@@ -38,9 +36,7 @@ export default {
   mounted(){
     this.$store.dispatch("axiosItems")
   },
-  created(){
-    console.log("created:",this.$store.getters)
-  }
+ 
 };
 </script>
 <style>

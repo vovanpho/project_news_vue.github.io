@@ -19,18 +19,19 @@
             <div class="closeSearch" v-if="query.length>0" @click="reset"><fontAwesomeIcon :icon="['fas', 'times']"/></div>
         </form>
         <div class="viewResult" v-if="query.length>0 && searchResultVisible">
-            <ul class="flexCol" ref="results">
-                <li v-for="(post, index) in searchResults" 
-                :key="index"  
+            <div class="flexCol" ref="results">
+                <a v-for="(post, index) in searchResults" 
+                :key="index" 
+                :href="post.item.url" 
                 @mousedown.prevent ='searchResultVisible=true'
                 :class="{ 'bgcolor': index === highlightIndex }"
+                target="_blank" 
+                rel="noopener noreferrer"
                 >
-                    <router-link :to="{name:'ViewPage', params:{id: index}}">
-                        <div>{{post.item.title}}</div> 
-                    </router-link>
-                </li>
-            </ul>
-            <div v-if="searchResults.length==0" ><p>No resutl for "<strong>{{query}}</strong>"</p></div>
+                <div>{{post.item.title}}</div>
+                </a>
+            </div>
+            <div v-if="searchResults.length==0"><p>No resutl for "<strong>{{query}}</strong>"</p></div>
         </div>
     </div>
 </template>
@@ -64,7 +65,7 @@ export default {
         }
     },
     created() {
-    axios.get("http://newsapi.org/v2/everything?q=apple&from=2020-11-02&to=2020-11-02&sortBy=popularity&apiKey=502b88d5a5f748c1a4af8ddbb30374e8")
+    axios.get("http://newsapi.org/v2/everything",{params: this.$store.getters.axiosParams})
          .then(Response => {this.posts=Response.data.articles})
          .catch(console.error(), (this.errored = true))
          .finally(() => (this.loading = false));
@@ -107,7 +108,7 @@ export default {
         },
         gotolink(){
             if (this.searchResults[this.highlightIndex]) {
-                window.location=this.searchResults[this.highlightIndex]
+                window.location=this.searchResults[this.highlightIndex].post.url
             }
             
         }
@@ -156,7 +157,7 @@ export default {
     .flexCol{
         border: 1px solid;
     }
-    li.bgcolor{
+    a.bgcolor{
             background-color: rgb(167, 187, 243);
     }
 </style>

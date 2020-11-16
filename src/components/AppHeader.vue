@@ -8,7 +8,7 @@
         </button>
         </div>
         <div class="divLogo">
-          <h1><router-link to="/"><span>News</span><span></span></router-link></h1>
+          <h1><router-link to="/"><span>News</span><span>{{ngay}}/{{thang}}/{{nam}}</span><span>{{gio}}:{{phut}}</span></router-link></h1>
         </div>
         <div class="divUser">
           <p><fontAwesomeIcon :icon="['fas', 'user']" /></p>
@@ -30,34 +30,28 @@
 
 <script>
 import CompSearch from "./CompSearch.vue"
-import axios from "axios"
+
 export default {
   name: "AppHeader",
-  data() {
+  data(){
     return {
       showLinks: false,
-      windowWidth: innerWidth,
-      ngay: null
+      timezone: null,
+      phut: new Date().getMinutes(),
+      gio: new Date().getHours(),
+      ngay: new Date().getDate(),
+      thang: new Date().getMonth(),
+      nam: new Date().getFullYear(),
     };
   },
   components:{
     CompSearch,
   },
-  computed: {},
-  methonds:{
-    
-  },
-  create(){
-    axios
-      .get("https://maps.googleapis.com/maps/api/timezone/json?location=39.6034810,-119.6822510&timestamp=1331161200&key=AIzaSyAfEgNODpLvy7V-HIk5KW1CrGVQGhPkHnM")
-      .then(Response => {this.ngay=Response})
-      .catch(console.error(), (this.errored = true))
-      .finally(() => (this.loading = false));
-  }
+  
+
   
 };
-// const navto= document.getElementsByClassName('navToggle')[0]
-// navto.addEventListener('blur', )
+
 </script>
 
 <style>

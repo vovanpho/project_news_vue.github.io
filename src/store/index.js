@@ -1,10 +1,9 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import axios from "axios";
-// import qs from "qs";
-import dateWithLocal from "./modules/dateWithLocal.js"
-import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
-// import { get } from "core-js/fn/dict";
+import dateWithLocal from "./modules/everything.js"
+import HTTP from "../service/httpCommont"
+
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -36,38 +35,34 @@ export default new Vuex.Store({
   mutations: {
     AXIOS_ITEM(state,items){
       state.items = items
-      console.log(items)
-      console.log(state.nam)
     }
   },
+
   actions: {
-  //  axiosItems({commit}){
+    axiosItems({commit}){
+       HTTP.getData(this.getters.axiosParams)
+      .then(Response=>{commit("AXIOS_ITEM", Response.data.articles);})
+      .catch(console.error(),this.errored = true)
+      .finally(() => (this.loading = false));
+   },
+  },
+ 
+  modules: {
+    a:{
+      namespaced: true,
+      dateWithLocal
+    }
+  }
+
+})
+
+
+//  axiosItems({commit}){
   //     axios.get("http://newsapi.org/v2/everything?q=development&from=2020-11-11&to=2020-11-13&sortBy=popularity&apiKey=502b88d5a5f748c1a4af8ddbb30374e8")
   //     .then(Response=>{commit("AXIOS_ITEM", Response.data.articles);
   //   })
   //     .catch(console.error(),this.errored = true)
   //     .finally(() => (this.loading = false));
   //  },
-  // },
-    axiosItems({commit}){
-       axios.get('http://newsapi.org/v2/everything',{params: this.getters.axiosParams})
-      .then(Response=>{commit("AXIOS_ITEM", Response.data.articles);})
-      .catch(console.error(),this.errored = true)
-      .finally(() => (this.loading = false));
-   },
-  },
-  watch:{
-    
-  },
-  modules: {
-    a:{
-      namespaced: true,
-      dateWithLocal
-    }
-    
-  }
-
+  // },"Access-Control-Allow-Headers": "x-requested-with, content-type"  "Access-Control-Allow-Origin":"*"
   
-})
-
-

@@ -12,15 +12,15 @@
                 @keyup="performSearch"
                 @keydown.up.prevent="highlightPrev"
                 @keydown.down.prevent="highlightNext"
-                @keydown.enter="gotolink"
+                @keydown.enter.prevent="gotolink"
                 />
             </div>
             <button href="#" class="btn btnmd" type="submit"><fontAwesomeIcon :icon="['fas', 'search']" /></button>
             <div class="closeSearch" v-if="query.length>0" @click="reset"><fontAwesomeIcon :icon="['fas', 'times']"/></div>
         </form>
-        <div class="viewResult" v-if="query.length>0 && searchResultVisible">
-            <div class="flexCol" ref="results">
-                <a v-for="(post, index) in searchResults" 
+        <div class="viewResult" v-if="query.length>0  && searchResultVisible">
+            <ul class="flexCol" ref="results">
+                <li v-for="(post, index) in searchResults" 
                 :key="index" 
                 :href="post.item.url" 
                 @mousedown.prevent ='searchResultVisible=true'
@@ -29,8 +29,8 @@
                 rel="noopener noreferrer"
                 >
                 <div>{{post.item.title}}</div>
-                </a>
-            </div>
+                </li>
+            </ul>
             <div v-if="searchResults.length==0"><p>No resutl for "<strong>{{query}}</strong>"</p></div>
         </div>
     </div>
@@ -38,7 +38,7 @@
 
 <script>
 import CompSearchFocus from "./CompSearchFocus.vue"
-import axios from "axios"
+import mapGetters from "vuex"
 export default {
     name: "CompSearch",
     components:{
@@ -48,7 +48,6 @@ export default {
         return{
             query: '',
             searchResultVisible:false,
-            posts:null,
             searchResults:[],
             highlightIndex:0,
             options:{
@@ -60,16 +59,17 @@ export default {
                 maxPatternLength:32,
                 minMatchCharLength:1,
                 keys:['title']
-            }
-           
+            },
         }
     },
-    created() {
-    axios.get("http://newsapi.org/v2/everything",{params: this.$store.getters.axiosParams})
-         .then(Response => {this.posts=Response.data.articles})
-         .catch(console.error(), (this.errored = true))
-         .finally(() => (this.loading = false));
+    computed:{
+        posts(){
+            return this.$store.state.items
+        },
     },
+    // mounted(){
+    //     this.$store.dispatch("axiosItems")
+    // },
     methods: {
         reset(){
             this.query=''
@@ -108,7 +108,7 @@ export default {
         },
         gotolink(){
             if (this.searchResults[this.highlightIndex]) {
-                window.location=this.searchResults[this.highlightIndex].post.url
+                window.open(this.searchResults[this.highlightIndex].item.url,'_blank')
             }
             
         }
@@ -136,6 +136,7 @@ export default {
         .btn.btnmd{
             position: absolute;
             top: 0;
+            left: 0;
             padding: 6px;
         }
         
@@ -153,11 +154,12 @@ export default {
         overflow-y:auto;
         position:absolute;
         right: 0;
+        left: 0;
     }
     .flexCol{
         border: 1px solid;
     }
-    a.bgcolor{
+    li.bgcolor{
             background-color: rgb(167, 187, 243);
     }
 </style>

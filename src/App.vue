@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <div id="nav">
-      <app-header/>
+      <app-header />
     </div>
     <router-view />
   </div>
 </template>
 <script>
-import AppHeader from "./components/AppHeader.vue"
+import AppHeader from "./components/AppHeader.vue";
 export default {
-  components:{
+  components: {
     AppHeader
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -36,12 +36,14 @@ export default {
     }
   }
 }
-ul,li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-h1, p{
+h1,
+p {
   margin: 0;
 }
 </style>

@@ -1,21 +1,23 @@
 <template>
   <div class="home">
     <section class="sectionOne">
-    <!-- <comp-nav-bar></comp-nav-bar> -->
-    <div class="divContentCal">
-      <div class="items">
-        <div class="item" v-for="(item, index) in items" :key="index">
-          <img :src="item.urlToImage" alt="" />
-          <div class="textItem">
-            <div class="textContent">
-              <a :href="item.url" target="_blank" rel="noopener noreferrer"><h3>{{ item.title }}</h3></a>
-              <span>{{ item.author }}</span>
+      <!-- <comp-nav-bar></comp-nav-bar> -->
+      <div class="divContentCal">
+        <div class="items">
+          <div class="item" v-for="(item, index) in items" :key="index">
+            <img :src="item.urlToImage" alt="" />
+            <div class="textItem">
+              <div class="textContent">
+                <a :href="item.url" target="_blank" rel="noopener noreferrer"
+                  ><h3>{{ item.title }}</h3></a
+                >
+                <span>{{ item.author }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   </div>
 </template>
 
@@ -23,26 +25,26 @@
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue"; cho component
 // import CompNavBar from '../components/CompNavBar.vue';
+import { mapState, mapActions} from "vuex";
 export default {
   name: "Home",
-  components:{
+  components: {
     // CompNavBar
   },
-  computed:{
-    items(){
-      return this.$store.getters.allItems
-    }
-  },
-  mounted(){
-    this.$store.dispatch("axiosItems")
-  },
- 
+  computed: mapState({
+    items: state=>state.modEverything.items
+  }),
+  methods: mapActions('modEverything', [
+    'axiosEveItems'
+  ]),
+  created() {
+    this.$store.dispatch('modEverything/axiosEveItems')
+  }
 };
 </script>
 <style>
 .sectionOne {
   position: relative;
- 
 }
 .sectionOne .divCate {
   height: 10rem;
@@ -84,8 +86,8 @@ export default {
 .item .textItem .textContent span {
   margin-left: 1rem;
 }
-.item .textItem .textContent a{
-  text-decoration:  none;
+.item .textItem .textContent a {
+  text-decoration: none;
 }
 /* 
 https://blog.logrocket.com/how-to-consume-apis-with-vuex-and-axios/

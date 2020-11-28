@@ -11,8 +11,8 @@
           <h1>
             <router-link to="/"
               ><span><strong>NEWS</strong> {{ nam }}</span
-              ><br><span>{{ ngay }}/{{ thang }} </span
-              ><span>{{ gio }}:{{ phut }}:{{giay}}</span></router-link
+              ><br /><span>{{ ngay }}/{{ thang }} </span
+              ><span>{{ gio }}:{{ phut }}:{{ giay }}</span></router-link
             >
           </h1>
         </div>
@@ -41,7 +41,6 @@
 <script>
 import CompSearch from "./CompSearch.vue";
 
-
 export default {
   name: "AppHeader",
   data() {
@@ -52,30 +51,28 @@ export default {
       ngay: null,
       gio: null,
       phut: null,
-      giay: null,
-      
+      giay: null
     };
   },
   components: {
-    CompSearch,
+    CompSearch
   },
-  created(){
-    setInterval(this.startTime, 500)
+  created() {
+    setInterval(this.startTime, 500);
   },
-  
-  methods:{
+
+  methods: {
     startTime() {
-          const today = new Date();
-          this.nam = today.getFullYear()
-          this.thang = today.getMonth()
-          this.ngay = today.getDate()
-          this.gio = today.getHours()
-          this.phut = today.getMinutes()
-          this.giay = today.getSeconds()
-    },
+      const today = new Date();
+      this.nam = today.getFullYear();
+      this.thang = today.getMonth() + 1;
+      this.ngay = today.getDate();
+      this.gio = today.getHours();
+      this.phut = today.getMinutes();
+      this.giay = today.getSeconds();
+    }
   }
- 
-}
+};
 </script>
 
 <style>
@@ -89,14 +86,12 @@ export default {
   box-shadow: 0 0 1rem 0 #efefef;
   text-align: center;
 }
-.appHeader .navBar{
+.appHeader .navBar {
   padding: 10px;
 }
 
 .navBegin .divLogo h1 {
   line-height: 0.7em;
-
-  
 }
 .navBegin .divLogo h1 span {
   border: 2px solid #42b983;
@@ -110,7 +105,7 @@ export default {
   color: rgb(168, 145, 246);
   font-size: 24px;
 }
-.navBegin .divLogo h1 span:nth-child(3){
+.navBegin .divLogo h1 span:nth-child(3) {
   font-size: 20px;
 }
 .navBegin .divLogo h1 span:nth-child(4) {
@@ -120,17 +115,15 @@ export default {
   font-size: 16px;
 }
 
-
-
 @media (min-width: 1025px) {
-.appHeader .navBar {
-  display: flex;
-  align-items: center;
-}
+  .appHeader .navBar {
+    display: flex;
+    align-items: center;
+  }
 
-.navBar .navBegin {
-  flex: 1;
-}
+  .navBar .navBegin {
+    flex: 1;
+  }
   .navBar .navBegin .navToggle {
     display: none;
   }
@@ -138,18 +131,17 @@ export default {
     display: none;
   }
 
-.navBar .navCenter {
-  flex: 1;
-  text-align: left;
-}
-.navBar .navEnd {
-  flex: 1;
-  
-}
-.navBar .navEnd li {
-  display: inline-block;
-  margin-right: 1rem;
-}
+  .navBar .navCenter {
+    flex: 1;
+    text-align: left;
+  }
+  .navBar .navEnd {
+    flex: 1;
+  }
+  .navBar .navEnd li {
+    display: inline-block;
+    margin-right: 1rem;
+  }
 
   .navBar .navEnd .liSearch {
     display: none;
@@ -171,7 +163,6 @@ export default {
   }
   .navBegin .divButtonMenu .navToggle {
     margin: 0.6rem;
-    
   }
   .navBegin .divLogo {
     flex: 1;

@@ -1,24 +1,48 @@
-import Vue from "vue"
-import Vuex from "vuex"
-Vue.use(Vuex)
-export default new Vuex.Store({
-    state:{
-        q:[
-            {id:0, name:'general'},
-            {id:1, name:'business'},
-            {id:2, name:'entertainment'},
-            {id:3, name:'health '},
-            {id:4, name:'science'},
-            {id:5, name:'sports'},
-            {id:6, name:'technology'},
-        ]
+import Vue from "vue";
+import Vuex from "vuex";
 
-    },
-    
-})
-// top-headlines? country=us&category=business sources=techcrunch       entertainment    
-      // everything? domains=wsj.com
-      // sources? sources?language=en language=en&country=us
-      // World U.S. Politics N.Y. Business 
-      // Opinion: Tech Science Health Sports Arts Books Style Food Travel
-      //  Magazine: T Magazine Real Estate Video
+import HTTP from "../../service/httpCommont";
+
+Vue.use(Vuex);
+
+export default {
+  namespaced: true,
+  state: {
+    items: null,
+    urlOption: {
+      category: "business",
+      language: null,
+      country: null,
+      apiKey: "502b88d5a5f748c1a4af8ddbb30374e8"
+    }
+  },
+  getters: {
+    allItems: state => state.items,
+    axiosParams(state) {
+      const params = new URLSearchParams();
+      params.append("category", state.urlOption.category);
+      params.append("language", state.urlOption.language);
+      params.append("country", state.urlOption.country);
+      params.append("apikey", state.urlOption.apiKey);
+      return params;
+    }
+  },
+  mutations: {
+    AXIOS_ITEM(state, items) {
+      state.items = items;
+    }
+  },
+
+  actions: {
+    axiosSourcesItems({ commit }) {
+      HTTP.getDataSources(this.getters.axiosParams)
+        .then(Response => {
+          commit("AXIOS_ITEM", Response.data.articles);
+        })
+        .catch(console.error(), (this.errored = true))
+        .finally(() => (this.loading = false));
+    }
+  },
+
+  modules: {}
+};
